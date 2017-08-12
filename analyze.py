@@ -9,7 +9,7 @@ def read_file(file):
         return f.read()
 
 def get_words(text):
-    return [w.lower() for w in re.findall('\w+', text)]
+    return [w.lower() for w in re.findall(r'\w+', text)]
 
 def get_stats(words):
     s = sum([len(w) for w in words])
