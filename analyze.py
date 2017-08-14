@@ -11,8 +11,7 @@ def read_file(file):
         return f.read()
 
 def get_sentences(text):
-    # return sent_tokenize(text.decode('utf-8'))
-    return sent_tokenize(text)
+    return sent_tokenize(text.decode('utf-8'))
 
 def get_words(text):
     return [w.lower() for w in re.findall(r'\w+', text)]
