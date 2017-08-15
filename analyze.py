@@ -5,6 +5,9 @@ import sys
 import re
 from collections import Counter
 from nltk.tokenize import sent_tokenize
+from nltk.corpus import stopwords
+
+stop = set(stopwords.words('english'))
 
 def read_file(file):
     with open(file, 'r') as f:
@@ -14,7 +17,7 @@ def get_sentences(text):
     return sent_tokenize(text.decode('utf-8'))
 
 def get_words(text):
-    return [w.lower() for w in re.findall(r'\w+', text)]
+    return [w.lower() for w in re.findall(r'\w+', text) if w.lower() not in stop]
 
 def get_num_words(text):
     return len(get_words(text))
@@ -28,6 +31,9 @@ def get_word_stats(words):
 
     longest = sorted(list(set(words)), key=lambda w: len(w), reverse=True)
     print 'Longest words', longest[:20]
+
+    print 'Unique words', len(set(words))
+    print 'Unique word density', 1.0*len(set(words))/len(words)
 
 def get_sentence_stats(sentences):
     print 'Num sentences', len(sentences)
@@ -44,3 +50,4 @@ if __name__ == '__main__':
         sentences = get_sentences(text)
         get_word_stats(words)
         get_sentence_stats(sentences)
+        print
