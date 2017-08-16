@@ -17,7 +17,8 @@ def get_sentences(text):
     return sent_tokenize(text.decode('utf-8'))
 
 def get_words(text):
-    return [w.lower() for w in re.findall(r'\w+', text) if w.lower() not in stop]
+    # return [w.lower() for w in re.findall(r'\w+', text) if w.lower() not in stop]
+    return [w.lower() for w in re.findall(r'\w+', text) if w.lower()]
 
 def get_num_words(text):
     return len(get_words(text))
@@ -28,6 +29,9 @@ def get_word_stats(words):
 
     c = Counter(words)
     print 'Most common words', c.most_common(20)
+
+    c2 = Counter(zip(words, words[1:]))
+    print 'Most common word pairs', c2.most_common(20)
 
     longest = sorted(list(set(words)), key=lambda w: len(w), reverse=True)
     print 'Longest words', longest[:20]

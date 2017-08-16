@@ -1,2 +1,3 @@
 # text-analysis
-Just some scripts to analyze text
+
+Just a script to analyze and compare multiple text snippets. Still a work in progress.
