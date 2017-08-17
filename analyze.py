@@ -17,7 +17,6 @@ def get_sentences(text):
     return sent_tokenize(text.decode('utf-8'))
 
 def get_words(text):
-    # return [w.lower() for w in re.findall(r'\w+', text) if w.lower() not in stop]
     return [w.lower() for w in re.findall(r'\w+', text) if w.lower()]
 
 def get_num_words(text):
@@ -50,8 +49,15 @@ if __name__ == '__main__':
     for file in files:
         print 'Processing', file
         text = read_file(file)
+        print 'Words'
         words = get_words(text)
-        sentences = get_sentences(text)
         get_word_stats(words)
+
+        print 'Words no Stop Words'
+        words_no_stop = [w for w in words if w not in stop]
+        get_word_stats(words_no_stop)
+
+        print 'Sentences'
+        sentences = get_sentences(text)
         get_sentence_stats(sentences)
         print
