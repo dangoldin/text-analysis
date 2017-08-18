@@ -44,20 +44,30 @@ def get_sentence_stats(sentences):
     print 'Average sentence length - words', 1.0*sum(get_num_words(s) for s in sentences)/len(sentences)
 
 if __name__ == '__main__':
-    files = sys.argv[1:]
+    FILES = sys.argv[1:]
 
-    for file in files:
-        print 'Processing', file
-        text = read_file(file)
-        print 'Words'
-        words = get_words(text)
-        get_word_stats(words)
+    WORD_SETS = {}
+    for FILE in FILES:
+        print 'Processing', FILE
+        TEXT = read_file(FILE)
 
-        print 'Words no Stop Words'
-        words_no_stop = [w for w in words if w not in stop]
-        get_word_stats(words_no_stop)
+        print '\nWords'
+        WORDS = get_words(TEXT)
+        get_word_stats(WORDS)
 
-        print 'Sentences'
-        sentences = get_sentences(text)
-        get_sentence_stats(sentences)
+        print '\nWords no Stop Words'
+        WORDS_NO_STOP = [w for w in WORDS if w not in stop]
+        get_word_stats(WORDS_NO_STOP)
+
+        print '\nSentences'
+        SENTENCES = get_sentences(TEXT)
+        get_sentence_stats(SENTENCES)
         print
+
+        WORD_SETS[FILE] = set(WORDS)
+
+    for FILE1 in FILES:
+        for FILE2 in FILES:
+            if FILE1 != FILE2:
+                print FILE1, 'vs', FILE2
+                print WORD_SETS[FILE1] - WORD_SETS[FILE2]
