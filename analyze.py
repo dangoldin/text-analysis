@@ -4,8 +4,11 @@
 import sys
 import re
 from collections import Counter
+
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
+
+from textstat.textstat import textstat
 
 stop = set(stopwords.words('english'))
 
@@ -52,6 +55,17 @@ if __name__ == '__main__':
     for FILE in FILES:
         print 'Processing', FILE
         TEXT = read_file(FILE)
+
+        print 'Flesh reading ease', textstat.flesch_reading_ease(TEXT)
+        print 'Smog index', textstat.smog_index(TEXT)
+        print 'Flesch Kincaid grade', textstat.flesch_kincaid_grade(TEXT)
+        print 'Coleman Liau', textstat.flesch_kincaid_grade(TEXT)
+        print 'Automated readability index', textstat.automated_readability_index(TEXT)
+        print 'Dale Chall readability score', textstat.dale_chall_readability_score(TEXT)
+        print 'Difficult words', textstat.difficult_words(TEXT)
+        print 'Linsear write formula', textstat.linsear_write_formula(TEXT)
+        print 'Gunning fog', textstat.gunning_fog(TEXT)
+        print 'Text standard', textstat.text_standard(TEXT)
 
         print '\nWords'
         WORDS = get_words(TEXT)
