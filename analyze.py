@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 
 from nltk.tokenize import sent_tokenize
 from nltk.corpus import stopwords
@@ -49,41 +50,47 @@ def get_sentence_stats(sentences):
     print 'Average sentence length - words:', 1.0*sum(get_num_words(s) for s in sentences)/len(sentences)
 
 if __name__ == '__main__':
-    FILES = sys.argv[1:]
+    FILES_OR_DIRS = sys.argv[1:]
 
-    WORD_SETS = {}
-    for FILE in FILES:
-        print 'Processing', FILE
-        TEXT = read_file(FILE)
+    WORD_SETS = defaultdict(set)
+    for FILE_OR_DIR in FILES_OR_DIRS:
+        if os.path.isdir(FILE_OR_DIR):
+            FILES = [os.path.join(FILE_OR_DIR, fn) for fn in os.listdir(FILE_OR_DIR)]
+        else:
+            FILES = [FILE_OR_DIR]
 
-        print 'Flesh reading ease', textstat.flesch_reading_ease(TEXT)
-        print 'Smog index', textstat.smog_index(TEXT)
-        print 'Flesch Kincaid grade', textstat.flesch_kincaid_grade(TEXT)
-        print 'Coleman Liau', textstat.flesch_kincaid_grade(TEXT)
-        print 'Automated readability index', textstat.automated_readability_index(TEXT)
-        print 'Dale Chall readability score', textstat.dale_chall_readability_score(TEXT)
-        print 'Difficult words', textstat.difficult_words(TEXT)
-        print 'Linsear write formula', textstat.linsear_write_formula(TEXT)
-        print 'Gunning fog', textstat.gunning_fog(TEXT)
-        print 'Text standard', textstat.text_standard(TEXT)
+        for FILE in FILES:
+            print 'Processing', FILE
+            TEXT = read_file(FILE)
 
-        print '\nWords'
-        WORDS = get_words(TEXT)
-        get_word_stats(WORDS)
+            print 'Flesh reading ease', textstat.flesch_reading_ease(TEXT)
+            print 'Smog index', textstat.smog_index(TEXT)
+            print 'Flesch Kincaid grade', textstat.flesch_kincaid_grade(TEXT)
+            print 'Coleman Liau', textstat.flesch_kincaid_grade(TEXT)
+            print 'Automated readability index', textstat.automated_readability_index(TEXT)
+            print 'Dale Chall readability score', textstat.dale_chall_readability_score(TEXT)
+            print 'Difficult words', textstat.difficult_words(TEXT)
+            print 'Linsear write formula', textstat.linsear_write_formula(TEXT)
+            print 'Gunning fog', textstat.gunning_fog(TEXT)
+            print 'Text standard', textstat.text_standard(TEXT)
 
-        print '\nWords no Stop Words'
-        WORDS_NO_STOP = [w for w in WORDS if w not in stop]
-        get_word_stats(WORDS_NO_STOP)
+            print '\nWords'
+            WORDS = get_words(TEXT)
+            get_word_stats(WORDS)
 
-        print '\nSentences'
-        SENTENCES = get_sentences(TEXT)
-        get_sentence_stats(SENTENCES)
-        print
+            print '\nWords no Stop Words'
+            WORDS_NO_STOP = [w for w in WORDS if w not in stop]
+            get_word_stats(WORDS_NO_STOP)
 
-        WORD_SETS[FILE] = set(WORDS)
+            print '\nSentences'
+            SENTENCES = get_sentences(TEXT)
+            get_sentence_stats(SENTENCES)
+            print
 
-    for FILE1 in FILES:
-        for FILE2 in FILES:
-            if FILE1 != FILE2:
-                print FILE1, 'vs', FILE2
-                print WORD_SETS[FILE1] - WORD_SETS[FILE2]
+            WORD_SETS[FILE_OR_DIR] |= set(WORDS)
+
+    for FILE_OR_DIR1 in FILES_OR_DIRS:
+        for FILE_OR_DIR2 in FILES_OR_DIRS:
+            if FILE_OR_DIR1 != FILE_OR_DIR2:
+                print FILE_OR_DIR1, 'vs', FILE_OR_DIR2
+                print WORD_SETS[FILE_OR_DIR1] - WORD_SETS[FILE_OR_DIR2]
