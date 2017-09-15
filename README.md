@@ -7,6 +7,7 @@ TODOS:
 - Get Text
     - http://www.presidency.ucsb.edu/satradio.php?year=2017&Submit=DISPLAY
     - http://www.americanrhetoric.com/barackobamaspeeches.htm
+    - https://millercenter.org/the-presidency/presidential-speeches
 - Evolution over time
 - More visuals
 - # of unique words used over time
